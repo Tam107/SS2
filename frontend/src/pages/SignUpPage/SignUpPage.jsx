@@ -4,7 +4,8 @@ import { FcGoogle } from 'react-icons/fc'
 import { Link, useNavigate } from 'react-router'
 import { registerUserApi } from '../../api/client/api'
 import toast from 'react-hot-toast'
-
+import login3Image from "../../assets/main.png";
+ 
 const SignUpPage = ({setOtp,setEmailErrol}) => {
   const [pending,setPending] = useState(false)
   const navigate = useNavigate()
@@ -46,7 +47,9 @@ const SignUpPage = ({setOtp,setEmailErrol}) => {
     };
   return (
     <div className="flex h-screen">
-    <div className="h-full  w-[20%] bg-green-700  "></div>
+    <div className="h-full flex items-start justify-center  w-[20%] bg-green-950  ">
+      <img className="h-full object-contain flex-1" src={login3Image} alt="" />
+    </div>
     <div className="flex-1 pt-16 px-8 overflow-y-scroll">
       <div className="flex w-[30%] flex-col gap-6">
         <div className="flex logo-1 text-green-600 items-center gap-2">
