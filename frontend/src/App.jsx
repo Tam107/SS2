@@ -58,7 +58,8 @@ function App() {
 
 
 
-        {/* <Route path="/hotel" element={<HotelDetailPage/>}/> */}
+      
+
       </Routes>
     </>
   );

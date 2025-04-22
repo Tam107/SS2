@@ -123,7 +123,37 @@ const updateUserRoleApi = async(id,data)=>{
         }
     }
 }
+
+const createTitleTaskTwoApi = async()=>{
+    try {
+        const URL_LOGIN ='/callAPI/title'
+        const response = await axios.get(URL_LOGIN)
+
+        return response
+        
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message||"Error in axios",
+        }
+    }
+}
+const createPostTitleTaskTwoApi = async(data)=>{
+    try {
+        const URL_LOGIN ='/callAPI/title'
+        const response = await axios.post(URL_LOGIN,data)
+
+        return response
+        
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message||"Error in axios",
+        }
+    }
+}
 export {
+    createPostTitleTaskTwoApi,
     registerUserApi,
     checkTokenOtp,
     loginApi,
@@ -132,5 +162,6 @@ export {
     getAdminApi,
     userRegisterTeacherApi,
     getUsersRegisteredApi,
-    updateUserRoleApi
+    updateUserRoleApi,
+    createTitleTaskTwoApi
 }

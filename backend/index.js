@@ -9,6 +9,7 @@ import googleAuthRoute from "./routers/googleAuth.js";
 // import policyRoute from "./routes/policy.js"
 // import hotelsRoute from "./routes/hotels.js";
 import adminsRoute from "./routers/admin.js"; 
+import apiRoute from "./routers/api.js"; 
 // import roomsRoute from "./routes/rooms.js";
 import swaggerDocs from "./swagger.js";
 import cookieParser from "cookie-parser"; // Keep .jsx if necessary
@@ -54,6 +55,7 @@ app.use("/api/users", usersRoute);
 // app.use("/api/hotels", hotelsRoute);
 // app.use("/api/rooms", roomsRoute);
 app.use("/api/admin", adminsRoute);
+app.use("/api/callAPI/", apiRoute);
 // app.use("/api/auth", googleAuthRoute);
 // app.use("/api/servicesHotel", serviceHotelRoute);
 // app.use("/api/facilityHotel", facilityHotel);
