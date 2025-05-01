@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import OpenAI from "openai";
 import { GoogleGenerativeAI } from "@google/generative-ai"
+import Document from "../models/Document.js";
+ 
 dotenv.config()
 
 
@@ -121,7 +123,7 @@ router.post("/title", async (req, res) => {
     }
 });
 
-router.get("/title2", async (req, res) => {
+router.post("/title2", async (req, res) => {
     try {
         const client = new OpenAI({ baseURL: endpoint, apiKey: token });
 
@@ -134,19 +136,44 @@ router.get("/title2", async (req, res) => {
                 { 
                     role: "user", 
                     content: `
-                        The essay question is: 
-                        "Some people believe that the price of a car is the most important factor to consider when buying a vehicle. Others think that safety features, fuel efficiency, and other aspects are more significant.
-Discuss both views and give your own opinion"
-                        The essay is: 
-                        "When it comes to purchasing a car, people often have varying opinions on what factors should be prioritized. While some argue that the price of the car is the most crucial consideration, others believe that elements such as safety features, fuel efficiency, and other practical aspects are more important. This essay will explore both viewpoints before offering my own perspective.
+                        Scoring this ielts writing with the result as this format below:
+first you need write the full title of this ielts writing 
+second scoring this ielts writing as the ielts 4 principles 
+after that give me the total score and suggestion for improvement for each principle then give me the suggested sample based on the provided writing 
+                "
+${req.body.title}
+                    ${req.body.content}
+                "
+                Give me the result in the following JSON format:{
+  "full_title": "",
+  "total_score": "",
+  "Task_Response": {
+    "score": "",
+    "comment": ""
+  },
+  "Coherence_and_Cohesion": {
+    "score": "",
+    "comment": ""
+  },
+  "Lexical_Resource": {
+    "score": "",
+    "comment": ""
+  },
+  "Grammatical_Range_and_Accuracy": {
+    "score": "",
+    "comment": ""
+  },
+  "Suggestions_Improvement": {
+    "Task_Response": "",
+    "Coherence_and_Cohesion": "",
+    "Lexical_Resource": "",
+    "Grammatical_Range_and_Accuracy": ""
+  },
+  "Feedback":""
+  "Band_9_Sample": ""
+}
+                (check nếu title hoặc content không có nghĩa thì chỉ trả ra 1 object json chứa success là false và chỉ cần thế thôi không được thêm các chữ khác)
 
-On one hand, those who emphasize the price of a car argue that affordability is key when making a purchase. For many individuals, a car is one of the most expensive investments they will make, and as such, the cost is a critical factor in their decision-making process. In this context, people may opt for cars that fit within their budget, even if it means sacrificing some advanced features or brand preferences. For instance, a person on a tight budget might choose a less expensive model with fewer safety features, focusing primarily on the upfront cost of the vehicle. Additionally, in regions with economic challenges or where public transportation is limited, the affordability of a car becomes even more pressing.
-
-On the other hand, many people believe that the safety features and fuel efficiency of a car should take precedence over its price. Safety is an undeniable concern for most car buyers, especially considering the rising number of traffic accidents worldwide. Advanced safety technologies, such as airbags, anti-lock brakes, and collision warning systems, can significantly reduce the risk of injury in the event of an accident. As such, some buyers may be willing to spend extra money on a car that offers superior safety measures. Moreover, fuel efficiency has become increasingly important as people seek ways to save money on fuel and reduce their carbon footprint. Cars that are more fuel-efficient help drivers save money in the long run, which makes them a more appealing option for many buyers.
-
-In my opinion, while price is undoubtedly a significant factor in purchasing a car, I believe that safety features and fuel efficiency should be given more weight. A car is not just a mode of transport; it is an essential tool for ensuring personal safety and managing daily expenses. Opting for a vehicle with the latest safety technology and good fuel efficiency is not only an investment in long-term financial savings but also in peace of mind. In the long run, the higher upfront cost of a car with better features is likely to be outweighed by the savings on repairs, fuel, and insurance.
-
-In conclusion, both the price of a car and its safety and fuel efficiency are important factors to consider when making a purchase. However, I believe that prioritizing safety and fuel efficiency over price is a more sensible approach, as these aspects ultimately contribute to both personal well-being and financial savings in the long term."
                     ` 
                 }
             ],
@@ -159,30 +186,22 @@ In conclusion, both the price of a car and its safety and fuel efficiency are im
         });
         
 
-        const content = response.choices[0].message.content;
+    //  console.log(response.choices[0].message.content);
+     const path = JSON.parse(response.choices[0].message.content);
+    
+     const doc = new Document({
+        title:req.body.title,
+        content:req.body.content,
+        path:path
+     })
+     await doc.save()
+     
+     
 
-const evaluationResult = {
-    taskResponse: {
-        score: 8,
-        evaluation: content.match(/Task Response: (.*?)(?=\n)/)[1]
-    },
-    coherenceAndCohesion: {
-        score: 8,
-        evaluation: content.match(/Coherence and Cohesion: (.*?)(?=\n)/)[1]
-    },
-    lexicalResource: {
-        score: 7,
-        evaluation: content.match(/Lexical Resource: (.*?)(?=\n)/)[1]
-    },
-    grammaticalRange: {
-        score: 8,
-        evaluation: content.match(/Grammatical Range and Accuracy: (.*?)(?=\n)/)[1]
-    },
-    overallBandScore: 7.5 // Band score được tính từ các tiêu chí
-};
         return res.json({
             success: true,
-            evaluationResult
+            path,
+            doc
             // evaluationResult
         });
     } catch (error) {

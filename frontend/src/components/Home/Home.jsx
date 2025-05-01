@@ -7,14 +7,17 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   createPostTitleTaskTwoApi,
   createTitleTaskTwoApi,
+  submitTask2,
   userRegisterTeacherApi,
 } from "../../api/client/api";
 import { loadUserAction } from "../../redux/actions/UserAction";
+import { useNavigate } from "react-router";
 
 
 const Home = ({ title, setTitle, full, setFull, content, setContent }) => {
-  
+  const navigate = useNavigate();
   const [disableButton, setDisableButton] = useState(false);
+  const [disableSubmitButton, setDisableSubmitButton] = useState(false);
   const stateUser = useSelector((state) => state.UserReducer);
   const [disable, setDisable] = useState(false);
   const dispatch = useDispatch();
@@ -35,6 +38,18 @@ const Home = ({ title, setTitle, full, setFull, content, setContent }) => {
       setTitle(res.data);
       setDisableButton(false);
     }
+    setDisableButton(false);
+  };
+  const handleCreateWriting2 = async () => {
+    setDisableButton(true);
+    if(title){
+      const res = await createPostTitleTaskTwoApi();
+      if (res.success) {
+        setTitle(res.data);
+        setDisableButton(false);
+      }
+    }
+   
     setDisableButton(false);
   };
 
@@ -62,20 +77,33 @@ const Home = ({ title, setTitle, full, setFull, content, setContent }) => {
   };
 
   const handleSubmit =async () => {
-    setDisableButton(true);
-    const res = await createPostTitleTaskTwoApi({topic:title});
-    if (res.success) {
-      setTitle(res.data);
-      setDisableButton(false);
+    setDisableSubmitButton(true);
+    if(    title === "" || content === ""){
+      toast.error("Vui lòng nhập đề bài và nội dung");
+      setDisableSubmitButton(false);
+      return;
     }
-    setDisableButton(false);
+    const res = await submitTask2({title,content});
+    console.log(res);
+    
+    
+    if (res.success) {
+      // setTitle(res.data);
+      setDisableSubmitButton(false);
+      navigate(`/writing/${res.doc._id}`);
+    }
+    else{
+      setDisableSubmitButton(false);
+      toast.error(res.message);
+    }
+    setDisableSubmitButton(false);
   };
   const menu = (
     <Menu>
       <Menu.Item key="1" onClick={handleCreateWriting}>
         Tạo ngẫu nhiên
       </Menu.Item>
-      <Menu.Item key="2" onClick={handleSubmit}>
+      <Menu.Item key="2" onClick={handleCreateWriting2}>
         Tạo theo chủ đề
       </Menu.Item>
     </Menu>
@@ -143,7 +171,7 @@ const Home = ({ title, setTitle, full, setFull, content, setContent }) => {
           <TextArea
             value={content}
             onChange={(e) => setContent(e.target.value)} // Sửa lại để lấy giá trị từ e.target.value
-            className="pt-14 h-screen  px-6 border-none rounded-tr-none rounded-tl-none focus:ring-0 outline-none"
+            className="pt-6 h-screen  px-6 border-none rounded-tr-none rounded-tl-none focus:ring-0 outline-none"
             rows={30}
             placeholder="Paste your test"
           />
@@ -178,6 +206,7 @@ const Home = ({ title, setTitle, full, setFull, content, setContent }) => {
                   </Button>
                 )}
                 <button
+                  disabled={disableSubmitButton}
                   onClick={handleSubmit}
                   className="px-6 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition"
                 >

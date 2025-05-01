@@ -152,6 +152,34 @@ const createPostTitleTaskTwoApi = async(data)=>{
         }
     }
 }
+const submitTask2 = async(data)=>{
+    try {
+        const URL_LOGIN ='/callAPI/title2'
+        const response = await axios.post(URL_LOGIN,data)
+
+        return response
+        
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message||"Error in axios",
+        }
+    }
+}
+const getDocument = async(id)=>{
+    try {
+        const URL_LOGIN ='/document/get/'+id
+        const response = await axios.get(URL_LOGIN)
+
+        return response
+        
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message||"Error in axios",
+        }
+    }
+}
 export {
     createPostTitleTaskTwoApi,
     registerUserApi,
@@ -163,5 +191,7 @@ export {
     userRegisterTeacherApi,
     getUsersRegisteredApi,
     updateUserRoleApi,
-    createTitleTaskTwoApi
+    createTitleTaskTwoApi,
+    submitTask2,
+    getDocument
 }

@@ -14,6 +14,7 @@ import LoginDashboardPage from "./pages/LoginDashboardPage/LoginDashboardPage";
 import { loadAdminAction } from "./redux/actions/AdminAction";
 import PrivateRouteAdmin from "./pages/PrivateRouteAdmin/PrivateRouteAdmin";
 import DashboardTeacherRequestPage from "./pages/DashboardTeacherRequestPage/DashboardTeacherRequestPage";
+import WritingPage from "./pages/WritingPage/WritingPage";
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -32,6 +33,10 @@ function App() {
       <Routes>
         <Route path="/" element={ <PrivateRoute>
               <HomePage />
+            </PrivateRoute>} />
+
+            <Route path="/writing/:id" element={ <PrivateRoute>
+              <WritingPage />
             </PrivateRoute>} />
 
         <Route
