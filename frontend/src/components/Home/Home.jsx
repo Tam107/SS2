@@ -43,10 +43,15 @@ const Home = ({ title, setTitle, full, setFull, content, setContent }) => {
   const handleCreateWriting2 = async () => {
     setDisableButton(true);
     if(title){
-      const res = await createPostTitleTaskTwoApi();
+      const res = await createPostTitleTaskTwoApi({topic:title});
       if (res.success) {
         setTitle(res.data);
         setDisableButton(false);
+      }
+      else{
+        console.log(res);
+        
+        toast.error("Error in BE")
       }
     }
    
@@ -206,12 +211,16 @@ const Home = ({ title, setTitle, full, setFull, content, setContent }) => {
                   </Button>
                 )}
                 <button
-                  disabled={disableSubmitButton}
-                  onClick={handleSubmit}
-                  className="px-6 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition"
-                >
-                  Submit for Review
-                </button>
+  disabled={disableSubmitButton}
+  onClick={handleSubmit}
+  className={`px-6 py-2 text-white text-sm font-medium rounded-lg transition ${
+    disableSubmitButton
+      ? "bg-gray-300 cursor-not-allowed"
+      : "bg-blue-500 hover:bg-blue-600"
+  }`}
+>
+  Submit for Review
+</button>
               </div>
             </>
           )}
