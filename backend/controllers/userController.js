@@ -234,6 +234,23 @@ export const getUser = async (req, res, next) => {
     }
 }
 
+export const getTeacher = async (req, res, next) => {
+    try {
+        const users = await User.find({role:"teacher"}).select("-password");
+        // console.log(users);
+        
+        res.status(200).json({
+            success: true,
+            users,
+          });
+    } catch (error) {
+        return res.json({
+            success:false,
+            message:"Error in BE"
+        })
+    }
+}
+
 export const getAllUsers = async (req, res, next) => {
     try{
         const users = await User.find();

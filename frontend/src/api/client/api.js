@@ -181,6 +181,34 @@ const getDocument = async(id)=>{
         }
     }
 }
+const getTeacher = async()=>{
+    try {
+        const URL_LOGIN ='/users/getTeacher'
+        const response = await axios.get(URL_LOGIN)
+
+        return response
+        
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message||"Error in axios",
+        }
+    }
+}
+const inviteTeacherApi = async (id,data)=>{
+    try {
+        const URL_LOGIN ='/document/inviteTeacher/'+id
+        const response = await axios.patch(URL_LOGIN,data)
+
+        return response
+        
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message||"Error in axios",
+        }
+    }
+}
 export {
     createPostTitleTaskTwoApi,
     registerUserApi,
@@ -194,5 +222,7 @@ export {
     updateUserRoleApi,
     createTitleTaskTwoApi,
     submitTask2,
-    getDocument
+    getDocument,
+    getTeacher,
+    inviteTeacherApi
 }

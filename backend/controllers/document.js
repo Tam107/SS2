@@ -1,3 +1,4 @@
+import { sendMail } from "../helpers/sendMail.js";
 import Document from "../models/Document.js";
 export const getDocument = async (req, res) => {
     try {
@@ -11,6 +12,38 @@ export const getDocument = async (req, res) => {
         res.status(200).json({
             success: true,
             data: document,
+        });
+    } catch (error) {
+        console.log(error);
+        
+        return res.json({
+            success: false,
+            message: "Error in BE"
+        })
+    }
+}
+export const invitedTeacher = async (req,res)=>{
+    try {
+        const data = await  Document.updateOne({_id:req.params.documentId},{
+            teacherGrade:req.body.idTeacher
+        })
+        await sendMail({
+            email: req.body.email, // Email của giáo viên
+            subject: "New Essay Grading Request", // Tiêu đề email
+            text: `Dear Teacher,
+
+You have been invited to grade an essay by a student. Please log in to the system to review and grade the essay.
+
+Document ID: ${req.params.documentId}
+
+Thank you for your support!
+
+Best regards,
+The Essay Grading System Team`,
+        });
+        res.status(200).json({
+            success: true,
+            data: data,
         });
     } catch (error) {
         console.log(error);

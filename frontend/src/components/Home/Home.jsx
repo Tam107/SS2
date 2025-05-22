@@ -16,6 +16,7 @@ import { useNavigate } from "react-router";
 
 const Home = ({ title, setTitle, full, setFull, content, setContent }) => {
   const navigate = useNavigate();
+    const { isAuthenticated, loading,user } = useSelector((state) => state.UserReducer);
   const [disableButton, setDisableButton] = useState(false);
   const [disableSubmitButton, setDisableSubmitButton] = useState(false);
   const stateUser = useSelector((state) => state.UserReducer);
@@ -88,7 +89,7 @@ const Home = ({ title, setTitle, full, setFull, content, setContent }) => {
       setDisableSubmitButton(false);
       return;
     }
-    const res = await submitTask2({title,content});
+    const res = await submitTask2({title,content,_id:user._id});
     console.log(res);
     
     
@@ -120,7 +121,7 @@ const Home = ({ title, setTitle, full, setFull, content, setContent }) => {
       <div className="logo fixed top-4 left-4">
         <p className="text-2xl text-green-700">LOGO</p>
       </div>
-      <div className="popup fixed top-[10%] right-0 w-[5%] bg-white px-2 py-4 h-80 rounded-tl-xl rounded-bl-xl shadow-lg transition-all duration-300 hover:w-[10%]"></div>
+      
       <div className="flex gap-1">
         <div
           className={`${
@@ -130,7 +131,7 @@ const Home = ({ title, setTitle, full, setFull, content, setContent }) => {
           <div
             className={`w-full py-3 px-8 flex items-center justify-between border-b-[1px] border-gray-200 `}
           >
-            {/* <h3 className='font-[400] pl-6 text-3xl'>Untitled Document</h3> */}
+           
             <Input.TextArea
               ref={inputRef}
               className="font-[400] text-lg w-[60%] border-none focus:ring-0 outline-none border-gray-300 rounded-md"

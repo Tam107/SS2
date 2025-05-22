@@ -4,33 +4,63 @@ import { useNavigate, useParams } from 'react-router';
 import toast from 'react-hot-toast';
 import Writing from '../../components/Writing/Writing';
 import { getDocument } from '../../api/client/api';
+import { useSelector } from 'react-redux';
 
 const WritingPage = () => {
+    const { isAuthenticated, loading,user } = useSelector((state) => state.UserReducer);
+    console.log(user);
+   
+    
+    
 
     const {id}= useParams()
     const navigate = useNavigate()
     const [data, setData] = useState({})
+    
     const fetch = async(id)=>{
         const res = await getDocument(id)
-        console.log(res);
+       
         
         if(res.success){
-            console.log(res.data);
+            if(res.data.ownerId==user._id){
+                setData(res.data)
+            }
             
-            setData(res.data)
+            
+            
+            else{
+              
+                toast.error("No accessible")
+                        navigate("/")
+            }
+            
+          
         }
         else{
-            toast.error("Error")
+            
+            toast.error("Error in Writing page")
             navigate("/")
         }
+        return res.ownerId
     }
-    useEffect(()=>{
+    useEffect(  ()=>{
         if(!id){
             toast.error("Not found document")
             navigate("/")
         }
         else{
-           fetch(id)
+            if( !loading ){
+                if(isAuthenticated){
+                    fetch(id)
+                }
+                else{
+                    toast.error("No accessible")
+                        navigate("/")
+                }
+            }
+            
+           
+           
         }
       
     },[id])

@@ -5,7 +5,11 @@ const DocumentSchema = new mongoose.Schema({
     title:String,
     content:String,
     ownerId:String,
-    path:{type:Object}
+    path:{type:Object},
+    teacherGrade:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
+    }
     },
     {timestamps: true}
 )

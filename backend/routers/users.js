@@ -1,5 +1,5 @@
 import express from "express";
-import {deleteUser, getAllUsers, getUsersRegistered,getUser, updateUser,register,checkOtp,login,registerTeach} from "../controllers/userController.js";
+import {deleteUser, getAllUsers, getUsersRegistered,getUser, updateUser,register,checkOtp,login,registerTeach, getTeacher} from "../controllers/userController.js";
 import { verifyToken, verifyUser} from "../utils/verifyToken.js";
 import {registerUserValidate,loginUserValidate} from "../validate/user.js";
 
@@ -12,6 +12,7 @@ router.post('/checkOtp',checkOtp)
 router.post('/login',loginUserValidate,login)
 router.get("/getuser",verifyToken,getUser)
 router.get("/getusersRegistered",getUsersRegistered)
+router.get("/getTeacher",getTeacher)
 router.patch("/register-teacher/:id",registerTeach)
 
 

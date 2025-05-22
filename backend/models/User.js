@@ -38,7 +38,12 @@ const UserSchema = new mongoose.Schema({
         isRegister: {
             type:Boolean,
             default:false
-        }
+        },
+        gradedCount:Number,
+        EssaysId:[{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Document"
+        }]
 
 
     },
