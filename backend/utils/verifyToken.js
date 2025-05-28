@@ -7,7 +7,9 @@ import Admin from '../models/Admin.js';
 dotenv.config();    
 
 export const verifyToken = async(req, res, next) => {
-    const {token} = req.cookies
+    
+    
+    const {token} = req.cookies    
     
     if(!token){
         return res.status(200).json({
@@ -17,7 +19,7 @@ export const verifyToken = async(req, res, next) => {
     }
     try {
         const decode = jwt.verify(token,process.env.JWT_SECRET);
-        const user  = await User.findOne({_id:decode.id}).select("-password")
+        const user  = await User.findOne({_id:decode.id}).select("-password").populate("EssaysId.id")
         req.user = user
         next()
 

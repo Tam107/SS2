@@ -13,6 +13,8 @@ import md5 from "md5";
  *   description: User management API
  */
 
+
+
 export const registerTeach = async (req, res, next) => {
     try {
         // Kiểm tra xem id có tồn tại hay không
@@ -233,11 +235,28 @@ export const getUser = async (req, res, next) => {
         })
     }
 }
+export const acceptedEssay =async (req,res)=>{
+    try {
+
+        console.log(req.params.idDocument,"hi");
+        
+        const data = await User.updateOne({_id:req.user._id,"EssaysId.id":req.params.idDocument},{ $set: { "EssaysId.$.isAccepted": true } } )
+        res.status(200).json({
+            success: true,
+            data
+          });
+    } catch (error) {
+        return res.json({
+            success:false,
+            message:"Error in BE"
+        })
+    }
+}
 
 export const getTeacher = async (req, res, next) => {
     try {
         const users = await User.find({role:"teacher"}).select("-password");
-        // console.log(users);
+        console.log(users);
         
         res.status(200).json({
             success: true,

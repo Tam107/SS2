@@ -40,10 +40,18 @@ const UserSchema = new mongoose.Schema({
             default:false
         },
         gradedCount:Number,
-        EssaysId:[{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"Document"
-        }]
+        EssaysId: [
+            {
+                id: {
+                    type: mongoose.Schema.Types.ObjectId, // Tham chiếu đến tài liệu "Document"
+                    ref: "Document",
+                },
+                isAccepted: {
+                    type: Boolean,
+                    default: false,
+                },
+            },
+        ],
 
 
     },

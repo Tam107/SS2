@@ -1,5 +1,6 @@
 import { sendMail } from "../helpers/sendMail.js";
 import Document from "../models/Document.js";
+import User from "../models/User.js";
 export const getDocument = async (req, res) => {
     try {
         const document = await Document.findById(req.params.id);
@@ -27,6 +28,14 @@ export const invitedTeacher = async (req,res)=>{
         const data = await  Document.updateOne({_id:req.params.documentId},{
             teacherGrade:req.body.idTeacher
         })
+        const dataTeacher = await User.updateOne({_id:req.body.idTeacher},{
+            $push:{
+                EssaysId:{
+                    id:req.params.documentId
+                }
+            }
+        }
+        )
         await sendMail({
             email: req.body.email, // Email của giáo viên
             subject: "New Essay Grading Request", // Tiêu đề email
@@ -34,7 +43,7 @@ export const invitedTeacher = async (req,res)=>{
 
 You have been invited to grade an essay by a student. Please log in to the system to review and grade the essay.
 
-Document ID: ${req.params.documentId}
+Access the system at: http://localhost:5173
 
 Thank you for your support!
 

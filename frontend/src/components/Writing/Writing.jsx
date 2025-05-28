@@ -1,12 +1,15 @@
 import { Button, Dropdown, Input, Menu, Tag } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { loadUserAction } from "../../redux/actions/UserAction";
 import { useNavigate } from "react-router";
 import PopUp from "../PopUp/PopUp";
 import PopUpTeacher from "../PopUpTeacher/PopUpTeacher";
+import MenuRight from "../MenuRight/MenuRight";
+import PopUpRequest from "../PopUpRequest/PopUpRequest";
+import Review from "../Review/Review";
 
 const Writing = ({ full, setFull, data }) => {
   const navigate = useNavigate();
@@ -16,28 +19,48 @@ const Writing = ({ full, setFull, data }) => {
   const dispatch = useDispatch();
   const [popUpTeacher, setPopupTeacher] = useState(false);
   const inputRef = useRef(null);
-  
+  const [showRequest, setShowRequest] = useState(false);
+  const [count, setCount] = useState(0);
+  const getCount = () => {
+    const tmp = stateUser.user.EssaysId.filter((i) => i.isAccepted === false);
+
+    setCount(tmp?.length || 0);
+  };
+  useEffect(() => {
+    getCount();
+  }, [stateUser.user]);
 
   return (
     <>
-      <div className="relative w-full h-screen pl-28 pr-4 py-4 bg-[#F6F5F1]">
+      <div className="relative w-full h-screen pl-28 pr-4 py-4 bg-[#F6F5F2]">
         <div className="logo fixed top-4 left-4">
-          <p className="text-2xl text-green-700">LOGO</p>
+          <MenuRight
+            setShowRequest={setShowRequest}
+            count={count}
+            user={stateUser.user}
+          />
         </div>
-        <PopUp popUpTeacher={popUpTeacher} setPopupTeacher={setPopupTeacher} />
+        {stateUser.user.role !== "teacher" && (
+          <PopUp
+            popUpTeacher={popUpTeacher}
+            setPopupTeacher={setPopupTeacher}
+          />
+        )}
+
         <div className="flex w-full gap-1">
           <div
+            style={{ height: "calc(100vh - 20px)" }}
             className={`${
               full ? "w-full" : "w-[65%]"
-            } duration-300 transition-all  h-full bg-white shadow-md  rounded-xl`}
+            } duration-300 transition-all   bg-white shadow-md  rounded-xl`}
           >
             <div
-              className={`w-full py-3 px-8 flex items-center justify-between border-b-[1px] border-gray-200 `}
+              className={`w-full flex flex-col py-3 px-8  items-center justify-between border-b-[1px] border-gray-200 `}
             >
               {/* <h3 className='font-[400] pl-6 text-3xl'>Untitled Document</h3> */}
               <Input.TextArea
                 ref={inputRef}
-                className="font-[400] text-lg flex-1 border-none focus:ring-0 outline-none border-gray-300 rounded-md"
+                className="font-[400] text-lg  border-none focus:ring-0 outline-none border-gray-300 rounded-md"
                 placeholder="Enter title"
                 value={data.title}
                 autoSize={{ minRows: 1, maxRows: 5 }} // Tự động điều chỉnh số dòng từ 2 đến 5
@@ -45,13 +68,13 @@ const Writing = ({ full, setFull, data }) => {
             </div>
             <TextArea
               value={data.content}
-              className="pt-6 h-screen  px-6 border-none rounded-tr-none rounded-tl-none focus:ring-0 outline-none"
-              rows={30}
+              className="pt-6 h-screen  flex-1  px-6 border-none rounded-tr-none rounded-tl-none focus:ring-0 outline-none"
+              rows={29}
               placeholder="Paste your test"
             />
           </div>
           <div
-            style={{ height: "calc(100vh - 16px)" }}
+            style={{ height: "calc(100vh - 20px)" }}
             className={`${
               full ? "w-0" : "flex-1"
             }  bg-[#FDFDFC] rounded-xl duration-300 transition-all`}
@@ -143,7 +166,19 @@ const Writing = ({ full, setFull, data }) => {
           </div>
         </div>
       </div>
-      {popUpTeacher && <PopUpTeacher dataEssay={data} setShowModel={setPopupTeacher} />}
+      <Review/>
+      {popUpTeacher && (
+        <PopUpTeacher dataEssay={data} setShowModel={setPopupTeacher} />
+      )}
+      {showRequest && (
+        <>
+          <PopUpRequest
+            data={stateUser.user.EssaysId}
+            showRequest={showRequest}
+            setShowRequest={setShowRequest}
+          />
+        </>
+      )}
     </>
   );
 };
