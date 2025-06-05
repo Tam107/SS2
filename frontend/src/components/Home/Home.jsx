@@ -137,7 +137,7 @@ useEffect(() => {
           <MenuRight setShowRequest={setShowRequest} user={user} count={count} />
         </div>
 
-        <div className="flex gap-1">
+        <div  className="flex h-full  gap-1">
           <div
             className={`${
               full ? "w-full" : "w-[65%]"
@@ -197,10 +197,10 @@ useEffect(() => {
             />
           </div>
           <div
-            style={{ height: "calc(100vh - 16px)" }}
+            
             className={`${
               full ? "w-0" : "w-[30%]"
-            }  bg-[#FDFDFC] rounded-xl duration-300 transition-all`}
+            }  bg-[#FDFDFC] h-full rounded-xl duration-300 transition-all`}
           >
             {!full && (
               <>

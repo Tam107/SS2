@@ -223,6 +223,21 @@ const acceptedEssaysApi = async (idDocument)=>{
         }
     }
 }
+
+const submitGradeApi = async (idDocument, data)=>{
+    try {
+        const URL_LOGIN ='/document/submitGrade/'+idDocument
+        const response = await axios.patch(URL_LOGIN,data)
+
+        return response
+        
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message||"Error in axios",
+        }
+    }
+}
 export {
     createPostTitleTaskTwoApi,
     registerUserApi,
@@ -239,5 +254,6 @@ export {
     getDocument,
     getTeacher,
     inviteTeacherApi,
-    acceptedEssaysApi
+    acceptedEssaysApi,
+    submitGradeApi
 }

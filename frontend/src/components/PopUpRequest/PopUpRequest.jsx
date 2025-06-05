@@ -55,7 +55,10 @@ const PopUpRequest = ({ data, showRequest, setShowRequest }) => {
             <>
               <Button
                
-                onClick={() => navigate(`/writing/${record.id._id}`)}
+                onClick={() => {
+                  setShowRequest(false);
+                  navigate(`/writing/${record.id._id}`)
+                }}
                 type="primary"
               >
                 Go to Essay
@@ -69,7 +72,7 @@ const PopUpRequest = ({ data, showRequest, setShowRequest }) => {
   return (
     <>
       <div className="fixed top-0 left-0 h-screen w-full bg-[#00000042] ">
-        <div className="bg-white w-[60%] p-6 relative rounded-3xl  mx-auto top-[25%]">
+        <div className="bg-white w-[60%] p-6 relative rounded-3xl  mx-auto top-[2%]">
           <div className="w-full flex items-center justify-end">
             <RxCross1
               className="cursor-pointer"

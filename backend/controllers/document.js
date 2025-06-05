@@ -1,9 +1,34 @@
 import { sendMail } from "../helpers/sendMail.js";
 import Document from "../models/Document.js";
 import User from "../models/User.js";
+export const submitGrade = async (req,res)=>{
+    try {
+        const id = req.params.documentId;
+        const body = req.body
+        const idTeacher = body.idTeacher
+       
+
+        const data = await Document.updateOne({_id:id},{$set:{teacherGrade:body, isGraded:true}})
+
+        const user = await User.updateOne({_id:idTeacher},  { $inc: { gradedCount: 1 } } // Tăng giá trị gradedCount lên 1
+        )
+        
+        res.json({
+            success:true,
+            message:"Submit grade successfully",
+        })
+        
+    } catch (error) {
+        res.json({
+            success: false,
+            message: "Error in BE"
+        })
+    }
+}
 export const getDocument = async (req, res) => {
     try {
-        const document = await Document.findById(req.params.id);
+        const document = await Document.findById(req.params.id)// Chỉ lấy các trường cần thiết (email, name)
+
         if (!document) {
             return res.status(200).json({
                 success: false,
@@ -26,7 +51,7 @@ export const getDocument = async (req, res) => {
 export const invitedTeacher = async (req,res)=>{
     try {
         const data = await  Document.updateOne({_id:req.params.documentId},{
-            teacherGrade:req.body.idTeacher
+            teacherGrade:{idTeacher:req.body.idTeacher}
         })
         const dataTeacher = await User.updateOne({_id:req.body.idTeacher},{
             $push:{

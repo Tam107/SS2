@@ -7,9 +7,17 @@ const DocumentSchema = new mongoose.Schema({
     ownerId:String,
     path:{type:Object},
     teacherGrade:{
-        type:mongoose.Schema.Types.ObjectId,
+        idTeacher:{
+            type:mongoose.Schema.Types.ObjectId,
         ref:"User"
-    }
+        },
+        Task_Response:{score:Number, comment:String},
+        Lexical_Resource:{score:Number, comment:String},
+        Grammatical_Range_and_Accuracy:{score:Number, comment:String},
+        Coherence_and_Cohesion:{score:Number, comment:String},
+        Overal:{score:Number, comment:String},
+    },
+    isGraded:Boolean
     },
     {timestamps: true}
 )
