@@ -1,6 +1,51 @@
 import { sendMail } from "../helpers/sendMail.js";
 import Document from "../models/Document.js";
 import User from "../models/User.js";
+export const getDocumentByUser = async (req, res) => {
+    try {
+        const document = await Document.find({
+            ownerId: req.params.idUser 
+        })
+
+        console.log(document);
+
+       
+        
+
+        if (!document) {
+            return res.status(200).json({
+                success: false,
+                message: "Document not found"
+            });
+        }
+        const data = await Promise.all(
+            document.map(async (doc) => {
+                const infoTeacher = await User.findById(
+                    doc.teacherGrade?.idTeacher,
+                    "email username"
+                );
+                return {
+                    ...doc.toObject(),
+                    teacherInfo: infoTeacher
+                        ? { email: infoTeacher.email, name: infoTeacher.username }
+                        : null,
+                };
+            })
+        );
+
+        res.status(200).json({
+            success: true,
+            data,
+        });
+    } catch (error) {
+        console.log(error);
+        
+        return res.json({
+            success: false,
+            message: "Error in BE"
+        })
+    }
+}
 export const submitGrade = async (req,res)=>{
     try {
         const id = req.params.documentId;

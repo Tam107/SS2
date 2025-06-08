@@ -94,13 +94,21 @@ const Review = ({data}) => {
         comment: overview,
       },
     };
-    console.log(reviewData);
+    
     
     const res = await submitGradeApi(data._id, reviewData);
     if(!res.success){
       toast.error("Error in submitting review");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth", // Cuộn mượt mà
+      });
       return;
     }
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Cuộn mượt mà
+    });
     toast.success("Review submitted successfully");
     
 

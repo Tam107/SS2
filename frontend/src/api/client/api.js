@@ -238,7 +238,37 @@ const submitGradeApi = async (idDocument, data)=>{
         }
     }
 }
+const getDocumentByUserApi = async (idUser)=>{
+    try {
+        const URL_LOGIN ='/document/getByUser/'+idUser
+        const response = await axios.get(URL_LOGIN)
+
+        return response
+        
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message||"Error in axios",
+        }
+    }
+}
+const handleLogoutApi = async () => {
+    try {
+      // Gửi yêu cầu đến API logout
+      const URL_LOGIN ='/users/logout'
+      const response = await axios.post(URL_LOGIN,null,{withCredentials: true,})
+
+      return response
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message||"Error in axios",
+        }
+    }
+  };
 export {
+    handleLogoutApi,
+    getDocumentByUserApi,
     createPostTitleTaskTwoApi,
     registerUserApi,
     checkTokenOtp,

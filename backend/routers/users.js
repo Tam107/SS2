@@ -16,6 +16,14 @@ router.get("/getTeacher",getTeacher)
 router.patch("/register-teacher/:id",registerTeach)
 router.patch("/acceptedEssay/:idDocument",verifyToken,acceptedEssay) // ✅ Update user information
 
+router.post("/logout", (req, res) => {
+    console.log("Cookies received on logout:", req.cookies); // Xem có token không
+
+    
+    res.clearCookie("token", { path: "/",sameSite: "none",
+        secure: true, }); // Xóa cookie "token"
+    res.status(200).json({ success: true, message: "Logged out successfully" });
+  });
 
 
 

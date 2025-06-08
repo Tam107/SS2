@@ -73,7 +73,7 @@ router.get("/oauth", async (req, res) => {
         }
 
         user.password = "";
-        console.log(user,"hien ra");
+   
         
         const token = user.getJwtToken();
         console.log(token,"token 1");
@@ -85,7 +85,7 @@ router.get("/oauth", async (req, res) => {
             sameSite: "none",
             secure: true,
         };
-        console.log(options,"options");
+        
         res.status(200)
             .cookie("token", token, options)
             .redirect("http://localhost:5173");

@@ -10,6 +10,8 @@ import PopUpTeacher from "../PopUpTeacher/PopUpTeacher";
 import MenuRight from "../MenuRight/MenuRight";
 import PopUpRequest from "../PopUpRequest/PopUpRequest";
 import Review from "../Review/Review";
+import PopUpList from "../PopUpList/PopUpList";
+import { getDocumentByUserApi } from "../../api/client/api";
 
 const Writing = ({ full, setFull, data }) => {
   const {id} = useParams()
@@ -21,14 +23,25 @@ const Writing = ({ full, setFull, data }) => {
   const [popUpTeacher, setPopupTeacher] = useState(false);
   const inputRef = useRef(null);
   const [showRequest, setShowRequest] = useState(false);
+  const [showList, setShowList] = useState(false);
   const [count, setCount] = useState(0);
   const [showReview, setShowReview] = useState(false);
-  const getCount = () => {
+  const [documentById, setDocumentById] = useState([]);
+  const getCount = async() => {
     const tmp = stateUser.user.EssaysId.filter((i) => i.isAccepted === false);
     const tmpReview = stateUser?.user?.EssaysId?.find(
       (i) => i.isAccepted === true && i.id._id === data._id
     );
-    console.log(tmpReview);
+    const tmpDocument = await getDocumentByUserApi(stateUser.user._id);
+    console.log(tmpDocument);
+    
+    if (tmpDocument.success) {
+      setDocumentById(tmpDocument.data);
+    } else {
+      toast.error("Error in BE");
+    }
+    setDocumentById(tmpDocument.data);
+
     setShowReview(!!tmpReview);
     
 
@@ -40,15 +53,23 @@ const Writing = ({ full, setFull, data }) => {
   useEffect(() => {
     getCount();
   }, [stateUser.user,data,id]);
+  const scrollDown = ()=>{
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: "smooth"
+    })
+  }
+  
 
   return (
     <>
       <div className="relative w-full min-h-screen pl-28 pr-10 py-4 bg-[#F6F5F1]">
-        <div className="logo fixed top-4 left-4">
+        <div className="logo fixed h-full  top-4 left-4">
           <MenuRight
             setShowRequest={setShowRequest}
             count={count}
             user={stateUser.user}
+            setShowList={setShowList}
           />
         </div>
         {stateUser.user.role !== "teacher" && (
@@ -72,15 +93,17 @@ const Writing = ({ full, setFull, data }) => {
                 className="font-[400] text-lg  border-none focus:ring-0 outline-none border-gray-300 rounded-md"
                 placeholder="Enter title"
                 value={data.title}
-                autoSize={{ minRows: 1, maxRows: 5 }} // Tự động điều chỉnh số dòng từ 2 đến 5
+                autoSize={{ minRows: 1, maxRows: 7 }} // Tự động điều chỉnh số dòng từ 2 đến 5
               />
             </div>
+            <div className="flex-1 flex h-full overflow-hidden">
             <TextArea
               value={data.content}
               className="pt-6 h-full overflow-y-scroll  px-6 border-none rounded-tr-none rounded-tl-none focus:ring-0 outline-none"
               rows={30}
               placeholder="Paste your test"
             />
+            </div>
           </div>
           <div
             className={`${
@@ -91,6 +114,19 @@ const Writing = ({ full, setFull, data }) => {
               <div
                 className={`w-full duration-300 flex flex-col  transition-all px-2 py-2 `}
               >
+                 <div onClick={scrollDown} className="w-full mb-2 flex items-center justify-between rounded-lg border bg-red-500 px-4 py-2">
+                  <p className="text-lg font-medium text-[white]">Teacher grade</p>
+                  <p className="text-sm font-medium text-white">
+                    {data?.teacherGrade?.Overal?.score||"0.0 The teacher does not grade yet"}
+                  </p>
+                </div>
+                <div className="w-full mb-2 flex items-center justify-between rounded-lg border bg-[#17A34A] px-4 py-2">
+                  <p className="text-lg font-medium text-[white]">AI overall</p>
+                  <p className="text-sm font-medium text-white">
+                    {data.path?.total_score}
+                  </p>
+                </div>
+               
                 <div className="grid grid-cols-2 h-full gap-2 mb-2">
                   <div className="w-full flex items-center justify-between rounded-lg border bg-[#F1F5F9] px-4 py-2">
                     <p className="text-sm text-[#7F8BA0]">Task Response</p>
@@ -121,12 +157,7 @@ const Writing = ({ full, setFull, data }) => {
                     </p>
                   </div>
                 </div>
-                <div className="w-full mb-2 flex items-center justify-between rounded-lg border bg-[#17A34A] px-4 py-2">
-                  <p className="text-lg font-medium text-[white]">Overall</p>
-                  <p className="text-lg font-medium text-white">
-                    {data.path?.total_score}
-                  </p>
-                </div>
+                
                 <div className="w-full flex-1  flex flex-col gap-2 overflow-y-scroll ">
                   <div className="w-full flex flex-col gap-1 aspect-[8/2] p-2 rounded-lg border border-red-200 bg-red-100/50 bg-[#FFEFF0]">
                     <div className="w-fit rounded-lg items-center border text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 capitalize font-medium px-2.5 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 border-red-200 dark:border-red-700/30">
@@ -186,6 +217,15 @@ const Writing = ({ full, setFull, data }) => {
             data={stateUser.user.EssaysId}
             showRequest={showRequest}
             setShowRequest={setShowRequest}
+          />
+        </>
+      )}
+      {showList && (
+        <>
+          <PopUpList
+            data={documentById}
+            showRequest={showList}
+            setShowRequest={setShowList}
           />
         </>
       )}

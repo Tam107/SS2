@@ -9,12 +9,13 @@ const HomePage = () => {
   const [full, setFull] = useState(false); // thu phóng docs
   const [content, setContent] = useState(''); // thu phóng docs
   const [showRequest,setShowRequest] = useState(false);
+  const [showList,setShowList] = useState(false);
 
   
 
   return (
     <>
-      <Home showRequest={showRequest} setShowRequest={setShowRequest} content={content} setContent={setContent} full={full} setFull={setFull} title={title} setTitle={setTitle}/>
+      <Home showList={showList} setShowList={setShowList} showRequest={showRequest} setShowRequest={setShowRequest} content={content} setContent={setContent} full={full} setFull={setFull} title={title} setTitle={setTitle}/>
     </>
     
   )
