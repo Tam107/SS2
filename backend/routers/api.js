@@ -135,7 +135,6 @@ router.post("/title", async (req, res) => {
 router.post("/title2", async (req, res) => {
     try {
         const client = new OpenAI({ baseURL: endpoint, apiKey: token });
-        console.log(req.body);
 
 
 
@@ -250,7 +249,7 @@ router.get("/test", async (req, res) => {
             model: model
         });
 
-        console.log(response.choices[0].message.content);
+        
 
         return res.json({
             success: true,

@@ -266,7 +266,42 @@ const handleLogoutApi = async () => {
         }
     }
   };
+
+  const getChatsByUserIdApi = async (id) => {
+    try {
+        const URL_LOGIN ='/chat/getByUserId/'+id
+        const response = await axios.get(URL_LOGIN)
+
+        return response
+        
+    } catch (error) {
+        console.log(error,1);
+        
+        return {
+            success: false,
+            message: error?.response?.data?.message||"Error in axios",
+        }
+    }
+  }
+  const addChatApi = async (data) => {
+    try {
+        const URL_LOGIN ='/chat/addChat'
+        const response = await axios.post(URL_LOGIN,data)
+
+        return response
+        
+    } catch (error) {
+        console.log(error);
+        
+        return {
+            success: false,
+            message: error?.response?.data?.message||"Error in axios",
+        }
+    }
+  }
 export {
+    addChatApi,
+    getChatsByUserIdApi,
     handleLogoutApi,
     getDocumentByUserApi,
     createPostTitleTaskTwoApi,

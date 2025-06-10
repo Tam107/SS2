@@ -12,6 +12,7 @@ import PopUpRequest from "../PopUpRequest/PopUpRequest";
 import Review from "../Review/Review";
 import PopUpList from "../PopUpList/PopUpList";
 import { getDocumentByUserApi } from "../../api/client/api";
+import AiChatBot from "../AIChatBot/AiChatBot";
 
 const Writing = ({ full, setFull, data }) => {
   const {id} = useParams()
@@ -229,6 +230,8 @@ const Writing = ({ full, setFull, data }) => {
           />
         </>
       )}
+
+      <AiChatBot/>
     </>
   );
 };
