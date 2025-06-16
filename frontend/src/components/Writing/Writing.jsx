@@ -14,7 +14,7 @@ import PopUpList from "../PopUpList/PopUpList";
 import { getDocumentByUserApi } from "../../api/client/api";
 import AiChatBot from "../AIChatBot/AiChatBot";
 
-const Writing = ({ full, setFull, data }) => {
+const Writing = ({ full, setFull, data,setData }) => {
   const {id} = useParams()
   const navigate = useNavigate();
 
@@ -206,7 +206,7 @@ const Writing = ({ full, setFull, data }) => {
       </div>
       {
         (showReview || data.isGraded) && (
-          <Review data={data}/>
+          <Review setData={setData} data={data}/>
         )
       }
       {popUpTeacher && (

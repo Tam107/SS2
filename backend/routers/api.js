@@ -3,7 +3,12 @@ import dotenv from "dotenv";
 import OpenAI from "openai";
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import Document from "../models/Document.js";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 dotenv.config()
 
 
@@ -135,10 +140,6 @@ router.post("/title", async (req, res) => {
 router.post("/title2", async (req, res) => {
     try {
         const client = new OpenAI({ baseURL: endpoint, apiKey: token });
-
-
-
-
         const response = await client.chat.completions.create({
             messages: [
                 {
@@ -257,7 +258,7 @@ router.get("/test", async (req, res) => {
         });
     } catch (error) {
 
-        console.log(1);
+        
         console.log(error);
 
 
@@ -267,4 +268,50 @@ router.get("/test", async (req, res) => {
 
     }
 });
+
+router.post("/learning/:id", async (req, res) => {
+    try {
+       
+        const dataFolderPath = path.resolve(__dirname, "../data"); // Đường dẫn tới thư mục chứa file
+        const filePath = path.join(dataFolderPath, "data.json"); // Đường dẫn tới file data.json
+
+        // Kiểm tra xem thư mục có tồn tại không, nếu không thì tạo
+        if (!fs.existsSync(dataFolderPath)) {
+            fs.mkdirSync(dataFolderPath);
+        }
+
+        // Kiểm tra xem file data.json có tồn tại không
+        if (!fs.existsSync(filePath)) {
+            // Nếu không tồn tại, tạo file và thêm dữ liệu đầu tiên
+            fs.writeFileSync(filePath, JSON.stringify([req.body], null, 2)); // Ghi dữ liệu vào file với định dạng đẹp
+        } else {
+            // Nếu file tồn tại, đọc nội dung file và thêm dữ liệu mới
+            const fileContent = fs.readFileSync(filePath, "utf-8");
+            const parsedData = JSON.parse(fileContent); // Chuyển nội dung file thành mảng
+            parsedData.push(req.body); // Thêm dữ liệu mới vào mảng
+            fs.writeFileSync(filePath, JSON.stringify(parsedData, null, 2)); // Ghi lại nội dung vào file với định dạng đẹp
+        }
+
+        await Document.updateOne(
+            { _id: req.params.id },
+            {
+                isAIAcess: true,
+            }
+        );
+
+        return res.status(200).json({
+            success: true,
+            message: "Data has been added successfully",
+        });
+        
+    } catch (error) {
+        console.log(error);
+        
+        return res.status(200).json({
+            success: false,
+
+        });
+
+    }
+})
 export default router;

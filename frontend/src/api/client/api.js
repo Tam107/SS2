@@ -299,7 +299,24 @@ const handleLogoutApi = async () => {
         }
     }
   }
+  const learningAIApi = async (id,data) => {
+    try {
+        
+        const URL_LOGIN ='/callAPI/learning/'+id
+        const response = await axios.post(URL_LOGIN,data)
+
+        return response
+        
+    } catch (error) {
+        
+        return {
+            success: false,
+            message: error?.response?.data?.message||"Error in axios",
+        }
+    }
+  }
 export {
+    learningAIApi,
     addChatApi,
     getChatsByUserIdApi,
     handleLogoutApi,
