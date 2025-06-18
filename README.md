@@ -1,4 +1,5 @@
-# HANU Automated Essay Scoring System
+# HANU Automated Essay Scoring System [CLICK HERE TO WATCH VIDEO DEMO](https://www.youtube.com/watch?v=J5JIV6D6vKk&ab_channel=Vi%E1%BA%BFtV%C4%A9nhH%E1%BB%93)
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=J5JIV6D6vKk&ab_channel=Vi%E1%BA%BFtV%C4%A9nhH%E1%BB%93" frameborder="0" allowfullscreen></iframe>
 
 ## Overview
 The HANU Automated Essay Scoring (AES) System is a web-based application designed to assist Hanoi University (HANU) students in improving their IELTS Writing Task 2 proficiency. By leveraging advanced artificial intelligence, specifically OpenAI's GPT-4.1 large language model, the system provides automated essay scoring and detailed feedback. The system integrates a user-friendly interface built with ReactJS, secure authentication via OAuth2, and scalable data management using MongoDB. It supports both students and educators by combining AI-driven evaluations with optional teacher feedback, ensuring comprehensive and accurate assessments.
