@@ -300,7 +300,7 @@ const Review = ({data,setData}) => {
                     type="number"
                     className="flex  min-w-[150px] rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring  font-sans"
                     placeholder="Enter CC Score"
-                    value={coherenceCohesion}
+                    value={scoreCoherenceCohesion}
                     onChange={(e) => setScoreCoherenceCohesion(e.target.value)}
                     min={0.5}
                     max={9}

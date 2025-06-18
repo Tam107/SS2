@@ -68,11 +68,13 @@ const ConfirmOtpPage = ({ emailErrol,setOtp, otp }) => {
       <div className="flex h-screen">
         <div className="h-full  w-[20%] bg-green-700  "></div>
         <div className="pt-16 px-8 w-[50%] flex flex-col gap-8 mx-auto overflow-y-scroll">
-            <div className="flex logo-1 w-[50%] mx-auto text-green-600 items-center gap-2">
-              <p className="text-xl">LOGO</p>
-              <h3 className="font-[600] text-xl">Ten Du An</h3>
+          
+            <div className="flex logo-1 w-[80%] text-green-600 items-center gap-2">
+            {/* <h3 className="font-[600] text-green-600 text-xl">Automated Scoreing Essay System</h3> */}
+              
             </div>
             <div className="mx-auto w-[65%]">
+           
             <h3 className="font-[600] text-xl">Great, now verify your email</h3>
             </div>
             <div className="mx-auto w-[45%]">
