@@ -16,7 +16,7 @@ const Login = () => {
   const handleGoogleLogin = () => {
     console.log(123);
 
-    window.location.href = "http://localhost:8080/api/auth/login";
+    window.location.href = import.meta.env.VITE_GOOGLE_LOGIN_URL+"/login";
   };
   const handleFinish = async (e) => {
     console.log(e);

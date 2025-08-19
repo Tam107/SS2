@@ -12,7 +12,7 @@ const SignUpPage = ({setOtp,setEmailErrol}) => {
     const handleGoogleLogin = () => {
         console.log(123);
         
-        window.location.href = "http://localhost:8080/api/auth/login";
+        window.location.href = import.meta.env.VITE_GOOGLE_LOGIN_URL + "/login";
     };
     const onFinish = async(value) => {
       setPending(true)
