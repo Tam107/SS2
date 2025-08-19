@@ -10,16 +10,13 @@ const router = express.Router();
 const oAuth2Client = new OAuth2Client(
     '1021003224063-gprhsennt0tv0rl9bhc3ifh74sc4kobc.apps.googleusercontent.com',
     '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',
-    'http://localhost:8080/api/auth/oauth'
+    'https://ss2-w16p.onrender.com/api/auth/oauth'
 );
 
 async function getUserData(access_token) {
     const response = await fetch(
         `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`
     );
-   
-    
-    
     return await response.json();
 }
 
@@ -88,7 +85,7 @@ router.get("/oauth", async (req, res) => {
         
         res.status(200)
             .cookie("token", token, options)
-            .redirect("http://localhost:5173");
+            .redirect("https://ss2-11x.pages.dev");
     } catch (error) {
         console.error("Google OAuth error:", error);
         // res.redirect("http://localhost:5173/register?error=auth_failed");
