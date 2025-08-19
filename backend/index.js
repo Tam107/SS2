@@ -9,9 +9,9 @@ import googleAuthRoute from "./routers/googleAuth.js";
 // import uploadRoute from "./routes/upload.js"; 
 // import policyRoute from "./routes/policy.js"
 // import hotelsRoute from "./routes/hotels.js";
-import adminsRoute from "./routers/admin.js"; 
-import apiRoute from "./routers/api.js"; 
-import documentRoute from "./routers/document.js"; 
+import adminsRoute from "./routers/admin.js";
+import apiRoute from "./routers/api.js";
+import documentRoute from "./routers/document.js";
 // import roomsRoute from "./routes/rooms.js";
 import swaggerDocs from "./swagger.js";
 import cookieParser from "cookie-parser"; // Keep .jsx if necessary
@@ -36,14 +36,14 @@ const connect = async () => {
 // Call the connect function
 connect();
 
-mongoose.connection.on("disconnected",()=>{
+mongoose.connection.on("disconnected", () => {
     console.log(" Disconnected to MongoDB");
-} );
+});
 
 //middleware
 app.use(cookieParser());
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 app.use(express.static("public"));
 app.use(cors({
     origin: [
@@ -54,6 +54,15 @@ app.use(cors({
 }));
 
 // route
+
+app.use("/health", (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: "Server is healthy"
+    });
+});
+
+
 app.use("/api/auth", googleAuthRoute);
 
 app.use("/api/users", usersRoute);
@@ -69,7 +78,7 @@ app.use("/api/chat/", chatRoute);
 // app.use("/api/upload", uploadRoute);
 // app.use("/api/policy", policyRoute);
 
-app.use((error, req, res, next)=>{
+app.use((error, req, res, next) => {
     const errorStatus = error.status || 500;
     const errorMessage = error.message || "Something went wrong";
     return res.status(errorStatus).json({
