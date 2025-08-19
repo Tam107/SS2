@@ -12,4 +12,4 @@ jobs:
       - name: Ping Render server
         run: |
           echo "Pinging Render server..."
-          curl -s -o /dev/null -w "%{http_code}\n" https://ss2-w16p.onrender.com/login || true
+          curl -s -o /dev/null -w "%{http_code}\n" ss2-w16p.onrender.com || true
