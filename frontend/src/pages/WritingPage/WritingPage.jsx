@@ -51,7 +51,7 @@ const WritingPage = () => {
 
   const [full, setFull] = useState(false); // thu phóng docs
 
-  return <>{data && <Writing full={full} setFull={setFull} data={data} />}</>;
+  return <>{data && <Writing full={full} setFull={setFull} data={data} setData={setData}/>}</>;
 };
 
 export default WritingPage;

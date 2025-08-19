@@ -2,9 +2,9 @@ import { Button } from "antd";
 import React, { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
-import { submitGradeApi } from "../../api/client/api";
+import { learningAIApi, submitGradeApi } from "../../api/client/api";
 
-const Review = ({data}) => {
+const Review = ({data,setData}) => {
   const [overview, setOverview] = React.useState("");
   const [taskResponse, setTaskResponse] = React.useState("");
   const [lexicalResource, setLexicalResource] = React.useState("");
@@ -17,7 +17,7 @@ const Review = ({data}) => {
   const [scoreCoherenceCohesion, setScoreCoherenceCohesion] = React.useState('');
   const stateUser = useSelector((state) => state.UserReducer);
 
-  console.log(data);
+  
   
   const calculateOverallScore = () => {
     const scores = [
@@ -93,6 +93,7 @@ const Review = ({data}) => {
         score: scoreOveral,
         comment: overview,
       },
+      Essay:data.content
     };
     
     
@@ -105,15 +106,64 @@ const Review = ({data}) => {
       });
       return;
     }
+    const resLearning = await learningAIApi(data._id, reviewData);
+    if(!res.success){
+      toast.error("Error in submitting review");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth", // Cuộn mượt mà
+      });
+      return;
+    }
+    
+    setData({...data, isAIAcess:true});
     window.scrollTo({
       top: 0,
       behavior: "smooth", // Cuộn mượt mà
     });
     toast.success("Review submitted successfully");
+
     
 
     // Submit the review data to the server or handle it as needed
   };
+
+  const AILearning = async (e) => {
+    e.preventDefault();
+    if (
+      !scoreOveral ||
+      !scoreTaskResponse ||
+      !scoreLexicalResource ||
+      !scoreGrammaticalRange ||
+      !scoreCoherenceCohesion
+    ) {
+      toast.error("Please fill all score fields");
+      return;
+    }
+    const reviewData = {
+      Task_Response: {
+        score: scoreTaskResponse,
+        comment: taskResponse,
+      },
+      Lexical_Resource: {
+        score: scoreLexicalResource,
+        comment: lexicalResource,
+      },
+      Grammatical_Range_and_Accuracy: {
+        score: scoreGrammaticalRange,
+        comment: grammaticalRange,
+      },
+      Coherence_and_Cohesion: {
+        score: scoreCoherenceCohesion,
+        comment: coherenceCohesion,
+      },
+      Essay:data.content
+    };
+
+  
+    
+    
+  }
   return (
     <>
       <div className=" w-screen py-4  bg-[#F6F5F2]">
@@ -243,6 +293,8 @@ const Review = ({data}) => {
                     className="flex w-full mb-1 rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 min-h-[120px] font-sans"
                     placeholder="Review..."
                     data-listener-added_03f3dd6a="true"
+                    value={coherenceCohesion}
+                    onChange={(e) => setCoherenceCohesion(e.target.value)}
                   ></textarea>
                   <input
                     type="number"
@@ -257,6 +309,7 @@ const Review = ({data}) => {
                 </div>
               </div>
               <div className="flex justify-end space-x-2">
+              
               {
                 data?.teacherGrade?.idTeacher === stateUser.user._id &&
                 <button

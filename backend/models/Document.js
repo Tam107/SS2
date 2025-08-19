@@ -17,7 +17,8 @@ const DocumentSchema = new mongoose.Schema({
         Coherence_and_Cohesion:{score:Number, comment:String},
         Overal:{score:Number, comment:String},
     },
-    isGraded:Boolean
+    isGraded:Boolean,
+    isAIAcess:Boolean
     },
     {timestamps: true}
 )

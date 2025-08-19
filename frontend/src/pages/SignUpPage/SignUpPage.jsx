@@ -51,10 +51,10 @@ const SignUpPage = ({setOtp,setEmailErrol}) => {
       <img className="h-full object-contain flex-1" src={login3Image} alt="" />
     </div>
     <div className="flex-1 pt-16 px-8 overflow-y-scroll">
-      <div className="flex w-[30%] flex-col gap-6">
+      <div className="flex w-[40%] flex-col gap-6">
         <div className="flex logo-1 text-green-600 items-center gap-2">
           <p className="text-xl">LOGO</p>
-          <h3 className="font-[600] text-xl">Ten Du An</h3>
+          <h3 className="font-[600] text-xl">Automated Scoreing Essay System</h3>
         </div>
         <div className="text-green-600 font-[600] text-2xl tracking-wider">
           Create your account

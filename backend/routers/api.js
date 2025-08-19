@@ -1,33 +1,37 @@
 import express from "express";
 import dotenv from "dotenv";
 import OpenAI from "openai";
-import {GoogleGenerativeAI} from "@google/generative-ai"
+import { GoogleGenerativeAI } from "@google/generative-ai"
 import Document from "../models/Document.js";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 dotenv.config()
+
+
+
 
 const token = process.env.OPEN_API_KEY_3;
 const endpoint = "https://models.github.ai/inference";
 const model = "openai/gpt-4.1";
-//get results from AI
+
+
+
 const router = express.Router();
 //get randiom title
 router.get("/title", async (req, res) => {
     try {
-        const client = new OpenAI({baseURL: endpoint, apiKey: token});
+        const client = new OpenAI({ baseURL: endpoint, apiKey: token });
         console.log(client);
 
 
         const response = await client.chat.completions.create({
             messages: [
-                {
-                    role: "system",
-                    content: "You are a helpful assistant who generates IELTS Writing Task 2 questions based on real-life past exam topics."
-                },
-                {
-                    role: "user",
-                    content: "Create a random IELTS Writing Task 2 question. The question should based on topics commonly found in real IELTS exams."
-                }
+                { role: "system", content: "You are a helpful assistant who generates IELTS Writing Task 2 questions based on real-life past exam topics." },
+                { role: "user", content: "Create a random IELTS Writing Task 2 question. The question should based on topics commonly found in real IELTS exams." }
             ],
             temperature: 0.5,
             top_p: 1,
@@ -57,7 +61,7 @@ router.get("/title", async (req, res) => {
             systemInstruction: {
                 role: "system",
                 parts: [
-                    {text: "You are a helpful assistant who generates IELTS Writing Task 2 questions based on real-life past exam topics."}
+                    { text: "You are a helpful assistant who generates IELTS Writing Task 2 questions based on real-life past exam topics." }
                 ]
             }
         });
@@ -76,25 +80,19 @@ router.get("/title", async (req, res) => {
 //get title on topic
 router.post("/title", async (req, res) => {
     try {
-        const client = new OpenAI({baseURL: endpoint, apiKey: token});
+        const client = new OpenAI({ baseURL: endpoint, apiKey: token });
         const topic = req.body.topic;
         console.log(req.body);
 
 
         if (!topic) {
-            return res.status(200).json({error: 'Topic is required', success: false});
+            return res.status(200).json({ error: 'Topic is required', success: false });
         }
 
         const response = await client.chat.completions.create({
             messages: [
-                {
-                    role: "system",
-                    content: "You are a helpful assistant who generates IELTS Writing Task 2 questions based on real-life past exam topics."
-                },
-                {
-                    role: "user",
-                    content: `Create a random IELTS Writing Task 2 question based on the topic: ${topic}. The question should be relevant to topics commonly found in real IELTS exams.`,
-                }
+                { role: "system", content: "You are a helpful assistant who generates IELTS Writing Task 2 questions based on real-life past exam topics." },
+                { role: "user", content: `Create a random IELTS Writing Task 2 question based on the topic: ${topic}. The question should be relevant to topics commonly found in real IELTS exams.`, }
             ],
             temperature: 0.5,
             top_p: 1,
@@ -121,7 +119,7 @@ router.post("/title", async (req, res) => {
             systemInstruction: {
                 role: "system",
                 parts: [
-                    {text: "You are a helpful assistant who generates IELTS Writing Task 2 questions based on real-life past exam topics."}
+                    { text: "You are a helpful assistant who generates IELTS Writing Task 2 questions based on real-life past exam topics." }
                 ]
             }
         });
@@ -138,11 +136,10 @@ router.post("/title", async (req, res) => {
     }
 });
 
-
+//get band
 router.post("/title2", async (req, res) => {
     try {
-        const client = new OpenAI({baseURL: endpoint, apiKey: token});
-
+        const client = new OpenAI({ baseURL: endpoint, apiKey: token });
         const response = await client.chat.completions.create({
             messages: [
                 {
@@ -153,41 +150,41 @@ router.post("/title2", async (req, res) => {
                     role: "user",
                     content: `
                         Scoring this ielts writing with the result as this format below:
-                        first you need write the full title of this ielts writing 
-                        second scoring this ielts writing as the ielts 4 principles 
-                        after that give me the total score and suggestion for improvement for each principle then give me the suggested sample based on the provided writing 
+first you need write the full title of this ielts writing 
+second scoring this ielts writing as the ielts 4 principles 
+after that give me the total score and suggestion for improvement for each principle then give me the suggested sample based on the provided writing 
                 "
-                    ${req.body.title}
+${req.body.title}
                     ${req.body.content}
                 "
                 Give me the result in the following JSON format:{
-                  "full_title": "",
-                  "total_score": "",
-                  "Task_Response": {
-                    "score": "",
-                    "comment": ""
-                  },
-                  "Coherence_and_Cohesion": {
-                    "score": "",
-                    "comment": ""
-                  },
-                  "Lexical_Resource": {
-                    "score": "",
-                    "comment": ""
-                  },
-                  "Grammatical_Range_and_Accuracy": {
-                    "score": "",
-                    "comment": ""
-                  },
-                  "Suggestions_Improvement": {
-                    "Task_Response": "",
-                    "Coherence_and_Cohesion": "",
-                    "Lexical_Resource": "",
-                    "Grammatical_Range_and_Accuracy": ""
-                  },
-                  "Feedback":""
-                  "Band_9_Sample": ""
-                }
+  "full_title": "",
+  "total_score": "",
+  "Task_Response": {
+    "score": "",
+    "comment": ""
+  },
+  "Coherence_and_Cohesion": {
+    "score": "",
+    "comment": ""
+  },
+  "Lexical_Resource": {
+    "score": "",
+    "comment": ""
+  },
+  "Grammatical_Range_and_Accuracy": {
+    "score": "",
+    "comment": ""
+  },
+  "Suggestions_Improvement": {
+    "Task_Response": "",
+    "Coherence_and_Cohesion": "",
+    "Lexical_Resource": "",
+    "Grammatical_Range_and_Accuracy": ""
+  },
+  "Feedback":""
+  "Band_9_Sample": ""
+}
                 (check nếu title hoặc content không có nghĩa thì chỉ trả ra 1 object json chứa success là false và chỉ cần thế thôi không được thêm các chữ khác)
 
                     `
@@ -201,20 +198,32 @@ router.post("/title2", async (req, res) => {
             frequency_penalty: 0.5,
         });
 
+
+
+
+
+        //  console.log(response.choices[0].message.content);
         const path = JSON.parse(response.choices[0].message.content);
 
         const doc = new Document({
             title: req.body.title,
             content: req.body.content,
             path: path,
-            ownerId: req.body._id
+            ownerId:req.body._id
         })
         await doc.save()
 
-        return res.json({success: true, path, doc});
+
+
+        return res.json({
+            success: true,
+            path,
+            doc
+            // evaluationResult
+        });
     } catch (error) {
         console.log("error");
-
+        
         console.log(error);
 
 
@@ -229,27 +238,27 @@ router.post("/title2", async (req, res) => {
 
 router.get("/test", async (req, res) => {
     try {
-        const client = new OpenAI({baseURL: endpoint, apiKey: token});
+        const client = new OpenAI({ baseURL: endpoint, apiKey: token });
 
         const response = await client.chat.completions.create({
             messages: [
-                {role: "system", content: ""},
-                {role: "user", content: "What is the capital of France?"}
+                { role: "system", content: "" },
+                { role: "user", content: "What is the capital of France?" }
             ],
             temperature: 1,
             top_p: 1,
             model: model
         });
 
-        console.log(response.choices[0].message.content);
+        
 
         return res.json({
             success: true,
-
+            
         });
     } catch (error) {
 
-        console.log(1);
+        
         console.log(error);
 
 
@@ -259,4 +268,50 @@ router.get("/test", async (req, res) => {
 
     }
 });
+
+router.post("/learning/:id", async (req, res) => {
+    try {
+       
+        const dataFolderPath = path.resolve(__dirname, "../data"); // Đường dẫn tới thư mục chứa file
+        const filePath = path.join(dataFolderPath, "data.json"); // Đường dẫn tới file data.json
+
+        // Kiểm tra xem thư mục có tồn tại không, nếu không thì tạo
+        if (!fs.existsSync(dataFolderPath)) {
+            fs.mkdirSync(dataFolderPath);
+        }
+
+        // Kiểm tra xem file data.json có tồn tại không
+        if (!fs.existsSync(filePath)) {
+            // Nếu không tồn tại, tạo file và thêm dữ liệu đầu tiên
+            fs.writeFileSync(filePath, JSON.stringify([req.body], null, 2)); // Ghi dữ liệu vào file với định dạng đẹp
+        } else {
+            // Nếu file tồn tại, đọc nội dung file và thêm dữ liệu mới
+            const fileContent = fs.readFileSync(filePath, "utf-8");
+            const parsedData = JSON.parse(fileContent); // Chuyển nội dung file thành mảng
+            parsedData.push(req.body); // Thêm dữ liệu mới vào mảng
+            fs.writeFileSync(filePath, JSON.stringify(parsedData, null, 2)); // Ghi lại nội dung vào file với định dạng đẹp
+        }
+
+        await Document.updateOne(
+            { _id: req.params.id },
+            {
+                isAIAcess: true,
+            }
+        );
+
+        return res.status(200).json({
+            success: true,
+            message: "Data has been added successfully",
+        });
+        
+    } catch (error) {
+        console.log(error);
+        
+        return res.status(200).json({
+            success: false,
+
+        });
+
+    }
+})
 export default router;

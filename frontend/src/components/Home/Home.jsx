@@ -15,6 +15,8 @@ import { useNavigate } from "react-router";
 import MenuRight from "../MenuRight/MenuRight";
 import PopUpRequest from "../PopUpRequest/PopUpRequest";
 import PopUpList from "../PopUpList/PopUpList";
+import AiChatBot from "../AIChatBot/AiChatBot";
+
 
 const Home = ({
   title,
@@ -137,13 +139,15 @@ const Home = ({
   const menu = (
     <Menu>
       <Menu.Item key="1" onClick={handleCreateWriting}>
-        Tạo ngẫu nhiên
+        Generate random topic
       </Menu.Item>
       <Menu.Item key="2" onClick={handleCreateWriting2}>
-        Tạo theo chủ đề
+        Generate by your topic
       </Menu.Item>
     </Menu>
   );
+
+  
 
   return (
     <>
@@ -169,7 +173,7 @@ const Home = ({
             >
               <Input.TextArea
                 ref={inputRef}
-                className="font-[400] text-lg w-[60%] border-none focus:ring-0 outline-none border-gray-300 rounded-md"
+                className="font-[400] text-lg w-[50%] border-none focus:ring-0 outline-none border-gray-300 rounded-md"
                 placeholder="Enter title"
                 value={title}
                 autoSize={{ minRows: 1, maxRows: 7 }} // Tự động điều chỉnh số dòng từ 2 đến 5
@@ -191,7 +195,7 @@ const Home = ({
                         <span>Đang tạo...</span>
                       </div>
                     ) : (
-                      "Tạo đề bài"
+                      "Generate Topic"
                     )}
                   </div>
                 </Dropdown>
@@ -199,7 +203,7 @@ const Home = ({
                   onClick={hanldeFocusInput}
                   className="px-4 py-2 bg-[#F7F7F7] cursor-pointer rounded-3xl"
                 >
-                  Đổi đề bài
+                  Change Topic
                 </div>
                 <div
                   onClick={() => setFull(!full)}
@@ -282,6 +286,8 @@ const Home = ({
           />
         </>
       )}
+
+      <AiChatBot/>
     </>
   );
 };
