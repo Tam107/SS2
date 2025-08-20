@@ -1,34 +1,40 @@
-import { Tooltip } from 'antd'
-import React from 'react'
+import React from "react";
+import { Tooltip } from "antd";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import { LuGitPullRequestCreateArrow } from 'react-icons/lu';
+import { LuGitPullRequestCreateArrow } from "react-icons/lu";
+import { HiMenu } from "react-icons/hi";
 
-const HeaderAdmin = () => {
-  return (
-    <>
-        <div className="h-14 flex items-center justify-end">
-            <div className="flex items-center justify-between mr-4 gap-6">
-            <div className="flex items-center">
-            <Tooltip title="Request as a teacher" arrow>
-                <LuGitPullRequestCreateArrow
-                    className="text-gray-600 cursor-pointer"
-                    size="30"
-                />
-                </Tooltip>
-              </div>
-              <div className="flex items-center">
-                <Tooltip title="Dashboard" arrow>
-                <DashboardIcon
-                    className="text-gray-600 cursor-pointer"
-                    fontSize="large"
-                />
-                </Tooltip>
-              </div>
-             
+const HeaderAdmin = ({ onMenuClick }) => {
+    return (
+        <div className="h-16 bg-white shadow-sm flex items-center justify-between px-4 sticky top-0 z-20">
+            {/* Mobile menu button */}
+            <div className="md:hidden">
+                <button
+                    onClick={onMenuClick}
+                    className="p-2 rounded-md hover:bg-gray-100 focus:outline-none"
+                >
+                    <HiMenu size={24} className="text-gray-700" />
+                </button>
             </div>
-          </div>
-    </>
-  )
-}
 
-export default HeaderAdmin
+            {/* Right icons */}
+            <div className="flex items-center gap-6 ml-auto">
+                <Tooltip title="Request as a teacher" arrow>
+                    <LuGitPullRequestCreateArrow
+                        className="text-gray-600 cursor-pointer hover:text-indigo-600 transition"
+                        size={26}
+                    />
+                </Tooltip>
+
+                <Tooltip title="Dashboard" arrow>
+                    <DashboardIcon
+                        className="text-gray-600 cursor-pointer hover:text-indigo-600 transition"
+                        fontSize="medium"
+                    />
+                </Tooltip>
+            </div>
+        </div>
+    );
+};
+
+export default HeaderAdmin;

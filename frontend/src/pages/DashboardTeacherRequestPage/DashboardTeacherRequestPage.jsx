@@ -4,20 +4,23 @@ import HeaderAdmin from "../../components/HeaderAdmin/HeaderAdmin";
 import DashboardTeacherRequest from "../../components/DashboardTeacherRequest/DashboardTeacherRequest";
 
 const DashboardTeacherRequestPage = () => {
-  return (
-    <>
-      <div className="flex">
-        <SidebarAdmin />
+    return (
+        <div className="flex min-h-screen bg-gray-50">
+            {/* Sidebar */}
+            <div className="hidden md:block">
+                <SidebarAdmin />
+            </div>
 
-        <div className="w-full">
-          {/* <Dashboard/> */}
-          <HeaderAdmin/>
-          <hr className="border-t border-gray-200" />
-          <DashboardTeacherRequest/>
+            {/* Main content */}
+            <div className="flex-1 flex flex-col">
+                <HeaderAdmin />
+                <hr className="border-t border-gray-200" />
+                <div className="flex-1 overflow-auto">
+                    <DashboardTeacherRequest />
+                </div>
+            </div>
         </div>
-      </div>
-    </>
-  );
+    );
 };
 
 export default DashboardTeacherRequestPage;
