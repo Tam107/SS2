@@ -15,6 +15,7 @@ import documentRoute from "./routers/document.js";
 // import roomsRoute from "./routes/rooms.js";
 import swaggerDocs from "./swagger.js";
 import cookieParser from "cookie-parser"; // Keep .jsx if necessary
+import aiRoutes from "./routers/api.js";
 import cors from "cors";
 // import googleAuthRoute from "./routes/googleAuth.js";
 
@@ -72,11 +73,7 @@ app.use("/api/admin", adminsRoute);
 app.use("/api/callAPI/", apiRoute);
 app.use("/api/document/", documentRoute);
 app.use("/api/chat/", chatRoute);
-// app.use("/api/auth", googleAuthRoute);
-// app.use("/api/servicesHotel", serviceHotelRoute);
-// app.use("/api/facilityHotel", facilityHotel);
-// app.use("/api/upload", uploadRoute);
-// app.use("/api/policy", policyRoute);
+app.use("", aiRoutes);
 
 app.use((error, req, res, next) => {
     const errorStatus = error.status || 500;
