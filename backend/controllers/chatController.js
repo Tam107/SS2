@@ -7,8 +7,8 @@ dotenv.config()
 
 
 const token = process.env.OPEN_API_KEY_3;
-const endpoint = "https://models.github.ai/inference";
-const model = "openai/gpt-4.1";
+const endpoint = "https://api.openai.com/v1";
+const model = "gpt-4o-mini";
 export const getChatsByUserId = async (req, res) => {
     try {
         const { id } = req.params;

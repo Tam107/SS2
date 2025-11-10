@@ -13,8 +13,8 @@ dotenv.config()
 
 
 const token = process.env.OPEN_API_KEY_3;
-const endpoint = "https://models.github.ai/inference";
-const model = "openai/gpt-4.1";
+const endpoint = "https://api.openai.com/v1";
+const model = "gpt-4o-mini";
 
 
 const router = express.Router();
@@ -56,7 +56,7 @@ router.get("/title", async (req, res) => {
 
         const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
         const modelGoogle = genAI.getGenerativeModel({
-            model: "gemini-1.5-flash",
+            model: "gemini-2.5-flash",
             generationConfig: {
                 temperature: 0.5,
 
@@ -120,7 +120,7 @@ router.post("/title", async (req, res) => {
 
         const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
         const modelGoogle = genAI.getGenerativeModel({
-            model: "gemini-1.5-flash",
+            model: "gemini-2.5-flash",
             generationConfig: {
                 temperature: 0.5,
 
@@ -190,7 +190,7 @@ Give me the result ONLY in valid JSON format (no markdown, no explanation). Form
             ],
             temperature: 0.5,
             top_p: 1,
-            model: "openai/gpt-4.1",
+            model: model,
             n: 1,
             presence_penalty: 0.5,
             frequency_penalty: 0.5,

@@ -3,7 +3,7 @@ import TextArea from "antd/es/input/TextArea";
 import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { LuCircleChevronRight, LuMenu } from "react-icons/lu";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import {
     createPostTitleTaskTwoApi,
     createTitleTaskTwoApi,
@@ -199,10 +199,16 @@ const Home = ({
 
                     {/* Right Panel */}
                     {!full && (
-                        <div className="lg:w-1/4  bg-white rounded-2xl shadow-lg flex flex-col h-fit">
-                            <div className="w-full py-5 px-5 lg:flex-row-reverse flex  items-center gap-3 justify-between border-b border-gray-200">
+                        <div className="w-full lg:w-1/4 bg-white rounded-2xl shadow-lg flex flex-col h-fit">
+                            {/* Header action area */}
+                            <div
+                                className="w-full px-5 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-gray-200">
+                                {/* Vai trò người dùng */}
                                 {user?.role === "teacher" ? (
-                                    <Tag color="green" className="text-base font-medium px-4 py-2 rounded-lg">
+                                    <Tag
+                                        color="green"
+                                        className="text-base font-medium px-4 py-2 rounded-lg text-center sm:ml-auto"
+                                    >
                                         Teacher
                                     </Tag>
                                 ) : (
@@ -215,15 +221,19 @@ const Home = ({
                                         Register Teacher
                                     </Button>
                                 )}
+
+                                {/* Nút Submit */}
                                 <Button
                                     disabled={disableSubmitButton}
                                     onClick={handleSubmit}
-                                    className="w-full max-w-3xl sm:w-auto px-6 py-2 text-white font-medium rounded-xl transition bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300"
+                                    className="w-full sm:w-auto px-6 py-2 text-white font-medium rounded-xl transition
+                 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300"
                                 >
                                     Submit for Review
                                 </Button>
                             </div>
                         </div>
+
                     )}
                 </div>
             </div>
